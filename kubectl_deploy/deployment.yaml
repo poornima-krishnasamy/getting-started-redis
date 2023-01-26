@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: getting-started-redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: getting-started-redis
+  template:
+    metadata:
+      labels:
+        app: getting-started-redis
+    spec:
+      containers:
+      - name: getting-started-redis
+        image: poornimak/getting-starter-redis:1.2
+        env:
+        - name: REDIS_AUTH_TOKEN
+          valueFrom:
+            secretKeyRef:
+              key: auth_token
+              name: rotate-token-ec-cluster-output
+        - name: REDIS_PRIMARY_ADDRESS
+          valueFrom:
+            secretKeyRef:
+              key: primary_endpoint_address
+              name: rotate-token-ec-cluster-output
+
